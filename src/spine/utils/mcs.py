@@ -85,10 +85,12 @@ def mcs_fit(
         )
         fit_args = fit_args + (csda_ke, csda_ke_frac, csda_weight)
 
+    objective = lambda x, *args: fit_func(float(x), *args)
     fit_min = scipy.optimize.minimize_scalar(
-        fit_func,
+        objective,
         args=fit_args,
         bounds=[lower_bound, upper_bound],
+        method="bounded",
     )
 
     return fit_min.x
@@ -208,7 +210,7 @@ def mcs_nll_lar(
     """
     # Compute the kinetic energy at each step
     assert len(theta), "Must provide angles to esimate the MCS loss"
-    num_steps = len(theta + 1)
+    num_steps = len(theta)
     ke_array = step_energy_loss_lar(T0, M, dx, num_steps=num_steps)
 
     # If there are less steps than expected, T0 is too low
