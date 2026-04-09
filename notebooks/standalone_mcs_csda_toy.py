@@ -305,6 +305,47 @@ def maybe_plot(summary: pd.DataFrame, out_dir: Path) -> None:
     plt.close(fig)
 
 
+def maybe_plot_diagnostics(toys: pd.DataFrame, out_dir: Path) -> None:
+    """Generate detailed distribution diagnostics when matplotlib is available."""
+    try:
+        import matplotlib.pyplot as plt
+    except Exception:
+        return
+
+    fig, ax = plt.subplots(2, 2, figsize=(12, 8))
+
+    ax[0, 0].hist(toys["T0_true"], bins=np.linspace(150, 1050, 19), alpha=0.8)
+    ax[0, 0].set_title("True KE distribution")
+    ax[0, 0].set_xlabel("True KE [MeV]")
+
+    bins_fit = np.linspace(0, 3000, 80)
+    ax[0, 1].hist(toys["mcs_ke"], bins=bins_fit, alpha=0.5, label="MCS")
+    ax[0, 1].hist(toys["comb_ke"], bins=bins_fit, alpha=0.5, label="MCS+CSDA")
+    ax[0, 1].set_title("Fitted KE distributions")
+    ax[0, 1].set_xlabel("Fitted KE [MeV]")
+    ax[0, 1].legend()
+
+    bins_err = np.linspace(-1500, 1500, 120)
+    ax[1, 0].hist(toys["mcs_err"], bins=bins_err, alpha=0.5, label="MCS")
+    ax[1, 0].hist(toys["comb_err"], bins=bins_err, alpha=0.5, label="MCS+CSDA")
+    ax[1, 0].set_title("Residual distributions (fit - true)")
+    ax[1, 0].set_xlabel("Residual [MeV]")
+    ax[1, 0].legend()
+
+    ax[1, 1].scatter(toys["csda_ke_proxy"], toys["mcs_ke"], s=4, alpha=0.25, label="MCS")
+    ax[1, 1].scatter(
+        toys["csda_ke_proxy"], toys["comb_ke"], s=4, alpha=0.25, label="MCS+CSDA"
+    )
+    ax[1, 1].set_title("Fit vs CSDA proxy")
+    ax[1, 1].set_xlabel("CSDA proxy KE [MeV]")
+    ax[1, 1].set_ylabel("Fitted KE [MeV]")
+    ax[1, 1].legend(markerscale=3)
+
+    fig.tight_layout()
+    fig.savefig(out_dir / "standalone_validation_distributions.png", dpi=140)
+    plt.close(fig)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--out-dir", default="notebooks/artifacts_standalone")
@@ -319,10 +360,30 @@ def main() -> None:
     toys.to_csv(out_dir / "standalone_exiting_muon_toys.csv", index=False)
     summary.to_csv(out_dir / "standalone_exiting_muon_summary.csv", index=False)
     maybe_plot(summary, out_dir)
+    maybe_plot_diagnostics(toys, out_dir)
+
+    # Detailed validation table
+    validation = []
+    for method, col in [("mcs", "mcs_err"), ("comb", "comb_err")]:
+        e = toys[col].to_numpy()
+        validation.append(
+            {
+                "method": method,
+                "mean_err": float(np.mean(e)),
+                "std_err": float(np.std(e)),
+                "mae": float(np.mean(np.abs(e))),
+                "medae": float(np.median(np.abs(e))),
+                "q05": float(np.quantile(e, 0.05)),
+                "q50": float(np.quantile(e, 0.50)),
+                "q95": float(np.quantile(e, 0.95)),
+            }
+        )
+    pd.DataFrame(validation).to_csv(out_dir / "standalone_validation_metrics.csv", index=False)
 
     print("Wrote:")
     print(out_dir / "standalone_exiting_muon_toys.csv")
     print(out_dir / "standalone_exiting_muon_summary.csv")
+    print(out_dir / "standalone_validation_metrics.csv")
 
     # Robust/global quick summary
     m_medae = np.median(np.abs(toys["mcs_err"]))
