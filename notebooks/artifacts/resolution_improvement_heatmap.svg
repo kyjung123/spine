@@ -1,45 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="360">
 <rect width="100%" height="100%" fill="white"/>
-<rect x="110.0" y="30.0" width="127.5" height="54.0" fill="rgb(40,229,101)" stroke="white"/>
-<text x="173.8" y="61.0" font-size="11" text-anchor="middle">98.1%</text>
-<rect x="237.5" y="30.0" width="127.5" height="54.0" fill="rgb(40,226,104)" stroke="white"/>
-<text x="301.2" y="61.0" font-size="11" text-anchor="middle">95.0%</text>
-<rect x="365.0" y="30.0" width="127.5" height="54.0" fill="rgb(40,217,116)" stroke="white"/>
-<text x="428.8" y="61.0" font-size="11" text-anchor="middle">85.1%</text>
+<rect x="110.0" y="30.0" width="127.5" height="54.0" fill="rgb(40,227,102)" stroke="white"/>
+<text x="173.8" y="61.0" font-size="11" text-anchor="middle">97.7%</text>
+<rect x="237.5" y="30.0" width="127.5" height="54.0" fill="rgb(40,225,105)" stroke="white"/>
+<text x="301.2" y="61.0" font-size="11" text-anchor="middle">95.2%</text>
+<rect x="365.0" y="30.0" width="127.5" height="54.0" fill="rgb(40,216,118)" stroke="white"/>
+<text x="428.8" y="61.0" font-size="11" text-anchor="middle">84.7%</text>
 <rect x="492.5" y="30.0" width="127.5" height="54.0" fill="rgb(40,192,150)" stroke="white"/>
-<text x="556.2" y="61.0" font-size="11" text-anchor="middle">57.5%</text>
+<text x="556.2" y="61.0" font-size="11" text-anchor="middle">58.1%</text>
 <rect x="110.0" y="84.0" width="127.5" height="54.0" fill="rgb(40,230,100)" stroke="white"/>
-<text x="173.8" y="115.0" font-size="11" text-anchor="middle">99.0%</text>
-<rect x="237.5" y="84.0" width="127.5" height="54.0" fill="rgb(40,228,102)" stroke="white"/>
+<text x="173.8" y="115.0" font-size="11" text-anchor="middle">100.0%</text>
+<rect x="237.5" y="84.0" width="127.5" height="54.0" fill="rgb(40,227,103)" stroke="white"/>
 <text x="301.2" y="115.0" font-size="11" text-anchor="middle">97.2%</text>
-<rect x="365.0" y="84.0" width="127.5" height="54.0" fill="rgb(40,220,112)" stroke="white"/>
-<text x="428.8" y="115.0" font-size="11" text-anchor="middle">88.3%</text>
-<rect x="492.5" y="84.0" width="127.5" height="54.0" fill="rgb(40,191,151)" stroke="white"/>
-<text x="556.2" y="115.0" font-size="11" text-anchor="middle">56.9%</text>
+<rect x="365.0" y="84.0" width="127.5" height="54.0" fill="rgb(40,218,115)" stroke="white"/>
+<text x="428.8" y="115.0" font-size="11" text-anchor="middle">87.4%</text>
+<rect x="492.5" y="84.0" width="127.5" height="54.0" fill="rgb(40,192,150)" stroke="white"/>
+<text x="556.2" y="115.0" font-size="11" text-anchor="middle">58.0%</text>
 <rect x="110.0" y="138.0" width="127.5" height="54.0" fill="rgb(40,229,100)" stroke="white"/>
-<text x="173.8" y="169.0" font-size="11" text-anchor="middle">98.8%</text>
-<rect x="237.5" y="138.0" width="127.5" height="54.0" fill="rgb(40,228,101)" stroke="white"/>
-<text x="301.2" y="169.0" font-size="11" text-anchor="middle">97.5%</text>
-<rect x="365.0" y="138.0" width="127.5" height="54.0" fill="rgb(40,223,109)" stroke="white"/>
-<text x="428.8" y="169.0" font-size="11" text-anchor="middle">91.3%</text>
+<text x="173.8" y="169.0" font-size="11" text-anchor="middle">100.0%</text>
+<rect x="237.5" y="138.0" width="127.5" height="54.0" fill="rgb(40,229,100)" stroke="white"/>
+<text x="301.2" y="169.0" font-size="11" text-anchor="middle">100.0%</text>
+<rect x="365.0" y="138.0" width="127.5" height="54.0" fill="rgb(40,222,110)" stroke="white"/>
+<text x="428.8" y="169.0" font-size="11" text-anchor="middle">91.2%</text>
 <rect x="492.5" y="138.0" width="127.5" height="54.0" fill="rgb(40,197,142)" stroke="white"/>
-<text x="556.2" y="169.0" font-size="11" text-anchor="middle">63.8%</text>
+<text x="556.2" y="169.0" font-size="11" text-anchor="middle">64.2%</text>
 <rect x="110.0" y="192.0" width="127.5" height="54.0" fill="rgb(40,229,100)" stroke="white"/>
-<text x="173.8" y="223.0" font-size="11" text-anchor="middle">98.3%</text>
-<rect x="237.5" y="192.0" width="127.5" height="54.0" fill="rgb(40,227,103)" stroke="white"/>
-<text x="301.2" y="223.0" font-size="11" text-anchor="middle">96.2%</text>
+<text x="173.8" y="223.0" font-size="11" text-anchor="middle">100.0%</text>
+<rect x="237.5" y="192.0" width="127.5" height="54.0" fill="rgb(40,229,100)" stroke="white"/>
+<text x="301.2" y="223.0" font-size="11" text-anchor="middle">100.0%</text>
 <rect x="365.0" y="192.0" width="127.5" height="54.0" fill="rgb(40,224,107)" stroke="white"/>
-<text x="428.8" y="223.0" font-size="11" text-anchor="middle">92.6%</text>
-<rect x="492.5" y="192.0" width="127.5" height="54.0" fill="rgb(40,201,138)" stroke="white"/>
-<text x="556.2" y="223.0" font-size="11" text-anchor="middle">67.4%</text>
-<rect x="110.0" y="246.0" width="127.5" height="54.0" fill="rgb(40,229,101)" stroke="white"/>
-<text x="173.8" y="277.0" font-size="11" text-anchor="middle">98.0%</text>
-<rect x="237.5" y="246.0" width="127.5" height="54.0" fill="rgb(40,226,104)" stroke="white"/>
-<text x="301.2" y="277.0" font-size="11" text-anchor="middle">95.0%</text>
-<rect x="365.0" y="246.0" width="127.5" height="54.0" fill="rgb(40,219,114)" stroke="white"/>
-<text x="428.8" y="277.0" font-size="11" text-anchor="middle">87.3%</text>
-<rect x="492.5" y="246.0" width="127.5" height="54.0" fill="rgb(40,206,131)" stroke="white"/>
-<text x="556.2" y="277.0" font-size="11" text-anchor="middle">72.9%</text>
+<text x="428.8" y="223.0" font-size="11" text-anchor="middle">93.4%</text>
+<rect x="492.5" y="192.0" width="127.5" height="54.0" fill="rgb(40,200,139)" stroke="white"/>
+<text x="556.2" y="223.0" font-size="11" text-anchor="middle">66.9%</text>
+<rect x="110.0" y="246.0" width="127.5" height="54.0" fill="rgb(40,229,100)" stroke="white"/>
+<text x="173.8" y="277.0" font-size="11" text-anchor="middle">100.0%</text>
+<rect x="237.5" y="246.0" width="127.5" height="54.0" fill="rgb(40,229,100)" stroke="white"/>
+<text x="301.2" y="277.0" font-size="11" text-anchor="middle">100.0%</text>
+<rect x="365.0" y="246.0" width="127.5" height="54.0" fill="rgb(40,229,100)" stroke="white"/>
+<text x="428.8" y="277.0" font-size="11" text-anchor="middle">100.0%</text>
+<rect x="492.5" y="246.0" width="127.5" height="54.0" fill="rgb(40,207,129)" stroke="white"/>
+<text x="556.2" y="277.0" font-size="11" text-anchor="middle">75.1%</text>
 <text x="173.8" y="325" font-size="12" text-anchor="middle">0.2</text>
 <text x="301.2" y="325" font-size="12" text-anchor="middle">0.4</text>
 <text x="428.8" y="325" font-size="12" text-anchor="middle">0.6</text>
@@ -51,5 +51,5 @@
 <text x="102" y="277.0" font-size="12" text-anchor="end">1000</text>
 <text x="320.0" y="350" font-size="13" text-anchor="middle">Contained fraction</text>
 <text x="20" y="180.0" transform="rotate(-90 20,180.0)" font-size="13" text-anchor="middle">True KE [MeV]</text>
-<text x="320.0" y="20" font-size="16" text-anchor="middle">Resolution improvement (%) with bounded fit range</text>
+<text x="320.0" y="20" font-size="16" text-anchor="middle">Resolution improvement (%) with default bounds</text>
 </svg>
