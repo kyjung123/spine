@@ -3,6 +3,7 @@
 import numpy as np
 
 from spine.post.base import PostBase
+from spine.utils.energy_loss import csda_table_spline
 from spine.utils.globals import (
     KAON_PID,
     MUON_PID,
@@ -12,7 +13,7 @@ from spine.utils.globals import (
     TRACK_SHP,
 )
 from spine.utils.mcs import ANGLE_METHODS, mcs_angles, mcs_fit
-from spine.utils.tracking import get_track_segments
+from spine.utils.tracking import get_track_length, get_track_segments
 
 __all__ = ["MCSEnergyProcessor"]
 
@@ -37,6 +38,11 @@ class MCSEnergyProcessor(PostBase):
         res_mixture=False,
         res_weight_ratio=0.5,
         res_scale_ratio=2.25,
+        use_csda_prior=False,
+        csda_ke_frac=0.2,
+        csda_weight=1.0,
+        csda_as_lower_bound=False,
+        csda_tracking_mode="step_next",
         include_pids=(MUON_PID, PION_PID, PROT_PID, KAON_PID),
         fill_per_pid=False,
         only_uncontained=False,
@@ -66,6 +72,17 @@ class MCSEnergyProcessor(PostBase):
             When using a Rayleigh mixture, defines the weight ratio between components
         res_scale_ratio : float, default 2.25
             When using a Rayleigh mixture, defines the scale ratio between components
+        use_csda_prior : bool, default False
+            If `True`, combine MCS likelihood with a CSDA kinetic-energy prior
+        csda_ke_frac : float, default 0.2
+            Relative uncertainty assigned to the CSDA kinetic-energy prior
+        csda_weight : float, default 1.0
+            Weight applied to the CSDA prior term in the combined fit
+        csda_as_lower_bound : bool, default False
+            If `True`, treat the CSDA estimate as a lower bound (best for
+            exiting tracks)
+        csda_tracking_mode : str, default 'step_next'
+            Method used to estimate track length for the CSDA prior
         include_pids : list, default [2, 3, 4, 5]
             Particle species to compute the kinetic energy for
         fill_per_pid : bool, default False
@@ -108,6 +125,16 @@ class MCSEnergyProcessor(PostBase):
         self.res_mixture = res_mixture
         self.res_weight_ratio = res_weight_ratio
         self.res_scale_ratio = res_scale_ratio
+        self.use_csda_prior = use_csda_prior
+        self.csda_ke_frac = csda_ke_frac
+        self.csda_weight = csda_weight
+        self.csda_as_lower_bound = csda_as_lower_bound
+        self.csda_tracking_mode = csda_tracking_mode
+        self.csda_splines = {}
+        if self.use_csda_prior:
+            self.csda_splines = {
+                ptype: csda_table_spline(ptype) for ptype in self.include_pids
+            }
 
     def process(self, data):
         """Reconstruct the MCS KE estimates for each particle in one entry.
@@ -151,6 +178,17 @@ class MCSEnergyProcessor(PostBase):
                 if len(theta) < 1:
                     continue
 
+                # Optionally estimate a CSDA prior from track range
+                csda_ke = None
+                if self.use_csda_prior:
+                    length = get_track_length(
+                        points,
+                        point=obj.start_point,
+                        method=self.csda_tracking_mode,
+                    )
+                    if length > 0.0:
+                        csda_ke = self.csda_splines[self.get_pid(obj)](length).item()
+
                 # Store the length and the MCS kinetic energy
                 mass = PID_MASSES[self.get_pid(obj)]
                 obj.mcs_ke = mcs_fit(
@@ -163,6 +201,10 @@ class MCSEnergyProcessor(PostBase):
                     self.res_mixture,
                     self.res_weight_ratio,
                     self.res_scale_ratio,
+                    csda_ke=csda_ke,
+                    csda_ke_frac=self.csda_ke_frac,
+                    csda_weight=self.csda_weight,
+                    csda_as_lower_bound=self.csda_as_lower_bound,
                 )
 
                 # If requested, convert the KE to other PID hypotheses
