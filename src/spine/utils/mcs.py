@@ -20,6 +20,10 @@ def mcs_fit(
     res_mixture=False,
     res_weight_ratio=0.5,
     res_scale_ratio=2.25,
+    csda_ke=None,
+    csda_ke_frac=0.2,
+    csda_weight=1.0,
+    csda_mode="gaussian",
     lower_bound=10.0,
     upper_bound=100000.0,
 ):
@@ -47,29 +51,94 @@ def mcs_fit(
         When using a Rayleigh mixture, defines the weight ratio between components
     res_scale_ratio : float, default 2.25
         When using a Rayleigh mixture, defines the scale ratio between components
+    csda_ke : float, optional
+        Optional CSDA kinetic energy estimate (MeV) used as a Gaussian prior
+        term in the objective
+    csda_ke_frac : float, default 0.2
+        Relative CSDA prior width. The prior sigma is `max(1, csda_ke_frac*csda_ke)`
+    csda_weight : float, default 1.0
+        Weight applied to the CSDA prior penalty term
+    csda_mode : str, default 'gaussian'
+        CSDA constraint mode. 'gaussian' applies a symmetric Gaussian prior
+        around `csda_ke`. 'lower_bound' applies a one-sided penalty that only
+        activates when `T0 < csda_ke` (useful for exiting tracks)
     lower_bound : float, default 10.
         Minimum allowed kinetic energy in MeV
     upper_bound : float, default 100000.
         Maximum allowed kinetic energy in MeV
     """
     # Optimize the initial kinetic energy given a set of angles
+    fit_func = mcs_nll_lar
+    fit_args = (
+        theta,
+        M,
+        dx,
+        z,
+        res_a,
+        res_b,
+        res_mixture,
+        res_weight_ratio,
+        res_scale_ratio,
+    )
+    if csda_ke is not None and csda_ke > 0.0:
+        fit_func = mcs_csda_nll_lar
+        if csda_mode not in ("gaussian", "lower_bound"):
+            raise ValueError(
+                f"Unknown CSDA mode `{csda_mode}`. "
+                "Must be one of ['gaussian', 'lower_bound']"
+            )
+        csda_mode_id = 0 if csda_mode == "gaussian" else 1
+        fit_args = fit_args + (csda_ke, csda_ke_frac, csda_weight, csda_mode_id)
+
     fit_min = scipy.optimize.minimize_scalar(
-        mcs_nll_lar,
-        args=(
-            theta,
-            M,
-            dx,
-            z,
-            res_a,
-            res_b,
-            res_mixture,
-            res_weight_ratio,
-            res_scale_ratio,
-        ),
+        fit_func,
+        args=fit_args,
         bounds=[lower_bound, upper_bound],
     )
 
     return fit_min.x
+
+
+@nb.njit(cache=True)
+def mcs_csda_nll_lar(
+    T0,
+    theta,
+    M,
+    dx,
+    z=1,
+    res_a=0.25,
+    res_b=1.25,
+    res_mixture=False,
+    res_weight_ratio=0.5,
+    res_scale_ratio=2.25,
+    csda_ke=0.0,
+    csda_ke_frac=0.2,
+    csda_weight=1.0,
+    csda_mode_id=0,
+):
+    """MCS NLL augmented with a Gaussian CSDA prior term."""
+    nll = mcs_nll_lar(
+        T0,
+        theta,
+        M,
+        dx,
+        z,
+        res_a,
+        res_b,
+        res_mixture,
+        res_weight_ratio,
+        res_scale_ratio,
+    )
+    sigma = max(1.0, csda_ke_frac * csda_ke)
+    if csda_mode_id == 0:
+        # Symmetric Gaussian pull
+        prior = 0.5 * csda_weight * ((T0 - csda_ke) / sigma) ** 2
+    else:
+        # One-sided lower-bound prior for exiting tracks
+        pull = max(0.0, (csda_ke - T0) / sigma)
+        prior = 0.5 * csda_weight * pull**2
+
+    return nll + prior
 
 
 @nb.njit(cache=True)
