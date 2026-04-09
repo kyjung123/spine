@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360">
+<rect width="100%" height="100%" fill="white"/>
+<rect x="110.0" y="30.0" width="127.5" height="54.0" fill="rgb(40,228,101)" stroke="white"/>
+<text x="173.8" y="61.0" font-size="11" text-anchor="middle">98.1%</text>
+<rect x="237.5" y="30.0" width="127.5" height="54.0" fill="rgb(40,226,104)" stroke="white"/>
+<text x="301.2" y="61.0" font-size="11" text-anchor="middle">95.8%</text>
+<rect x="365.0" y="30.0" width="127.5" height="54.0" fill="rgb(40,220,112)" stroke="white"/>
+<text x="428.8" y="61.0" font-size="11" text-anchor="middle">89.7%</text>
+<rect x="492.5" y="30.0" width="127.5" height="54.0" fill="rgb(40,203,135)" stroke="white"/>
+<text x="556.2" y="61.0" font-size="11" text-anchor="middle">70.4%</text>
+<rect x="110.0" y="84.0" width="127.5" height="54.0" fill="rgb(40,229,100)" stroke="white"/>
+<text x="173.8" y="115.0" font-size="11" text-anchor="middle">99.7%</text>
+<rect x="237.5" y="84.0" width="127.5" height="54.0" fill="rgb(40,228,101)" stroke="white"/>
+<text x="301.2" y="115.0" font-size="11" text-anchor="middle">98.1%</text>
+<rect x="365.0" y="84.0" width="127.5" height="54.0" fill="rgb(40,222,109)" stroke="white"/>
+<text x="428.8" y="115.0" font-size="11" text-anchor="middle">91.7%</text>
+<rect x="492.5" y="84.0" width="127.5" height="54.0" fill="rgb(40,202,136)" stroke="white"/>
+<text x="556.2" y="115.0" font-size="11" text-anchor="middle">69.8%</text>
+<rect x="110.0" y="138.0" width="127.5" height="54.0" fill="rgb(40,230,100)" stroke="white"/>
+<text x="173.8" y="169.0" font-size="11" text-anchor="middle">99.7%</text>
+<rect x="237.5" y="138.0" width="127.5" height="54.0" fill="rgb(40,229,100)" stroke="white"/>
+<text x="301.2" y="169.0" font-size="11" text-anchor="middle">99.5%</text>
+<rect x="365.0" y="138.0" width="127.5" height="54.0" fill="rgb(40,224,106)" stroke="white"/>
+<text x="428.8" y="169.0" font-size="11" text-anchor="middle">94.0%</text>
+<rect x="492.5" y="138.0" width="127.5" height="54.0" fill="rgb(40,207,130)" stroke="white"/>
+<text x="556.2" y="169.0" font-size="11" text-anchor="middle">74.7%</text>
+<rect x="110.0" y="192.0" width="127.5" height="54.0" fill="rgb(40,229,100)" stroke="white"/>
+<text x="173.8" y="223.0" font-size="11" text-anchor="middle">99.6%</text>
+<rect x="237.5" y="192.0" width="127.5" height="54.0" fill="rgb(40,229,100)" stroke="white"/>
+<text x="301.2" y="223.0" font-size="11" text-anchor="middle">99.4%</text>
+<rect x="365.0" y="192.0" width="127.5" height="54.0" fill="rgb(40,226,105)" stroke="white"/>
+<text x="428.8" y="223.0" font-size="11" text-anchor="middle">95.4%</text>
+<rect x="492.5" y="192.0" width="127.5" height="54.0" fill="rgb(40,209,127)" stroke="white"/>
+<text x="556.2" y="223.0" font-size="11" text-anchor="middle">76.9%</text>
+<rect x="110.0" y="246.0" width="127.5" height="54.0" fill="rgb(40,229,100)" stroke="white"/>
+<text x="173.8" y="277.0" font-size="11" text-anchor="middle">99.6%</text>
+<rect x="237.5" y="246.0" width="127.5" height="54.0" fill="rgb(40,229,100)" stroke="white"/>
+<text x="301.2" y="277.0" font-size="11" text-anchor="middle">99.3%</text>
+<rect x="365.0" y="246.0" width="127.5" height="54.0" fill="rgb(40,229,101)" stroke="white"/>
+<text x="428.8" y="277.0" font-size="11" text-anchor="middle">98.6%</text>
+<rect x="492.5" y="246.0" width="127.5" height="54.0" fill="rgb(40,215,119)" stroke="white"/>
+<text x="556.2" y="277.0" font-size="11" text-anchor="middle">83.3%</text>
+<text x="173.8" y="325" font-size="12" text-anchor="middle">0.2</text>
+<text x="301.2" y="325" font-size="12" text-anchor="middle">0.4</text>
+<text x="428.8" y="325" font-size="12" text-anchor="middle">0.6</text>
+<text x="556.2" y="325" font-size="12" text-anchor="middle">0.8</text>
+<text x="102" y="61.0" font-size="12" text-anchor="end">200</text>
+<text x="102" y="115.0" font-size="12" text-anchor="end">400</text>
+<text x="102" y="169.0" font-size="12" text-anchor="end">600</text>
+<text x="102" y="223.0" font-size="12" text-anchor="end">800</text>
+<text x="102" y="277.0" font-size="12" text-anchor="end">1000</text>
+<text x="320.0" y="350" font-size="13" text-anchor="middle">Contained fraction</text>
+<text x="20" y="180.0" transform="rotate(-90 20,180.0)" font-size="13" text-anchor="middle">True KE [MeV]</text>
+<text x="320.0" y="20" font-size="16" text-anchor="middle">Resolution improvement (%) of MCS+CSDA vs MCS</text>
+</svg>
