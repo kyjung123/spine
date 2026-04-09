@@ -23,6 +23,7 @@ def mcs_fit(
     csda_ke=None,
     csda_ke_frac=0.2,
     csda_weight=1.0,
+    csda_as_lower_bound=False,
     lower_bound=10.0,
     upper_bound=100000.0,
 ):
@@ -57,6 +58,9 @@ def mcs_fit(
         Relative CSDA prior width. The prior sigma is `max(1, csda_ke_frac*csda_ke)`
     csda_weight : float, default 1.0
         Weight applied to the CSDA prior penalty term
+    csda_as_lower_bound : bool, default False
+        If `True`, treat `csda_ke` as a lower bound (useful for exiting
+        tracks). If `False`, use a symmetric Gaussian prior around `csda_ke`
     lower_bound : float, default 10.
         Minimum allowed kinetic energy in MeV
     upper_bound : float, default 100000.
@@ -76,7 +80,9 @@ def mcs_fit(
         res_scale_ratio,
     )
     if csda_ke is not None and csda_ke > 0.0:
-        fit_func = mcs_csda_nll_lar
+        fit_func = (
+            mcs_csda_nll_lar_lower_bound if csda_as_lower_bound else mcs_csda_nll_lar
+        )
         fit_args = fit_args + (csda_ke, csda_ke_frac, csda_weight)
 
     fit_min = scipy.optimize.minimize_scalar(
@@ -119,6 +125,43 @@ def mcs_csda_nll_lar(
     )
     sigma = max(1.0, csda_ke_frac * csda_ke)
     prior = 0.5 * csda_weight * ((T0 - csda_ke) / sigma) ** 2
+    return nll + prior
+
+
+@nb.njit(cache=True)
+def mcs_csda_nll_lar_lower_bound(
+    T0,
+    theta,
+    M,
+    dx,
+    z=1,
+    res_a=0.25,
+    res_b=1.25,
+    res_mixture=False,
+    res_weight_ratio=0.5,
+    res_scale_ratio=2.25,
+    csda_ke=0.0,
+    csda_ke_frac=0.2,
+    csda_weight=1.0,
+):
+    """MCS NLL with a one-sided CSDA lower-bound prior."""
+    nll = mcs_nll_lar(
+        T0,
+        theta,
+        M,
+        dx,
+        z,
+        res_a,
+        res_b,
+        res_mixture,
+        res_weight_ratio,
+        res_scale_ratio,
+    )
+    if T0 >= csda_ke:
+        return nll
+
+    sigma = max(1.0, csda_ke_frac * csda_ke)
+    prior = 0.5 * csda_weight * ((csda_ke - T0) / sigma) ** 2
     return nll + prior
 
 

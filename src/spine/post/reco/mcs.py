@@ -41,6 +41,7 @@ class MCSEnergyProcessor(PostBase):
         use_csda_prior=False,
         csda_ke_frac=0.2,
         csda_weight=1.0,
+        csda_as_lower_bound=False,
         csda_tracking_mode="step_next",
         include_pids=(MUON_PID, PION_PID, PROT_PID, KAON_PID),
         fill_per_pid=False,
@@ -77,6 +78,9 @@ class MCSEnergyProcessor(PostBase):
             Relative uncertainty assigned to the CSDA kinetic-energy prior
         csda_weight : float, default 1.0
             Weight applied to the CSDA prior term in the combined fit
+        csda_as_lower_bound : bool, default False
+            If `True`, treat the CSDA estimate as a lower bound (best for
+            exiting tracks)
         csda_tracking_mode : str, default 'step_next'
             Method used to estimate track length for the CSDA prior
         include_pids : list, default [2, 3, 4, 5]
@@ -124,6 +128,7 @@ class MCSEnergyProcessor(PostBase):
         self.use_csda_prior = use_csda_prior
         self.csda_ke_frac = csda_ke_frac
         self.csda_weight = csda_weight
+        self.csda_as_lower_bound = csda_as_lower_bound
         self.csda_tracking_mode = csda_tracking_mode
         self.csda_splines = {}
         if self.use_csda_prior:
@@ -199,6 +204,7 @@ class MCSEnergyProcessor(PostBase):
                     csda_ke=csda_ke,
                     csda_ke_frac=self.csda_ke_frac,
                     csda_weight=self.csda_weight,
+                    csda_as_lower_bound=self.csda_as_lower_bound,
                 )
 
                 # If requested, convert the KE to other PID hypotheses
