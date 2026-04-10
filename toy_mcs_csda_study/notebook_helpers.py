@@ -67,3 +67,22 @@ def plot_reco_scatter_inline(reco_df, method="mcs_only"):
     ax.grid(alpha=0.25)
     fig.tight_layout()
     return fig, ax
+
+
+def plot_rmse_improvement_inline(compare_df):
+    """Plot fractional RMSE improvement vs energy for each contained fraction."""
+    require_matplotlib()
+    import matplotlib.pyplot as plt
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    for f in sorted(compare_df["f_contained"].unique()):
+        d = compare_df[np.isclose(compare_df["f_contained"], f)].sort_values("t0_true_mev")
+        ax.plot(d["t0_true_mev"], 100.0 * d["frac_rmse_improvement"], marker="o", label=f"f={f:.1f}")
+    ax.axhline(0.0, color="k", linestyle="--", linewidth=1)
+    ax.set_xlabel("True initial kinetic energy [MeV]")
+    ax.set_ylabel("RMSE improvement [%] (MCS-only -> MCS+CSDA-like)")
+    ax.set_title("Direct MCS+CSDA-like improvement visibility")
+    ax.grid(alpha=0.3)
+    ax.legend()
+    fig.tight_layout()
+    return fig, ax

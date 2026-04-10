@@ -101,6 +101,9 @@ def run_study(
     contained_fracs=None,
     n_events_per_grid: int | None = None,
     output_dir: Path | None = None,
+    penalty_mode: str = "soft",
+    penalty_sigma_cm: float = 8.0,
+    penalty_weight: float = 2.0,
 ):
     """Run the benchmark scan and return the output DataFrames."""
     if true_energies is None:
@@ -142,9 +145,9 @@ def run_study(
                     ev,
                     loss_model,
                     range_table,
-                    penalty_mode="soft",
-                    penalty_sigma_cm=8.0,
-                    penalty_weight=2.0,
+                    penalty_mode=penalty_mode,
+                    penalty_sigma_cm=penalty_sigma_cm,
+                    penalty_weight=penalty_weight,
                 )
                 r3 = estimate_energy_ideal_full_csda(ev, range_table)
 
@@ -171,9 +174,9 @@ def run_study(
                         t,
                         l_in_cm=ev_ex["l_in_cm"],
                         range_table=range_table,
-                        mode="soft",
-                        soft_sigma_cm=8.0,
-                        weight=2.0,
+                        mode=penalty_mode,
+                        soft_sigma_cm=penalty_sigma_cm,
+                        weight=penalty_weight,
                     )
                     like_rows.append(
                         {

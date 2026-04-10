@@ -81,6 +81,11 @@ jupyter notebook Toy_MCS_CSDA_Study.ipynb
 The notebook uses:
 - `run_study.run_study(...)` as an importable API
 - `notebook_helpers.py` for inline plots (bias/resolution vs energy/fraction, scatter)
+- explicit `compare_df` and RMSE-improvement plotting to directly inspect `mcs_csda_like_soft`
+
+If MCS-only and MCS+CSDA-like curves overlap too much, increase CSDA-like strength in the notebook call:
+- lower `penalty_sigma_cm`
+- higher `penalty_weight`
 
 If matplotlib is missing in your notebook environment, install it there:
 
