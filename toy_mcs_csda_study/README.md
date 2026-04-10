@@ -100,6 +100,7 @@ Default grid:
 - `outputs/reco_event_level.csv`
 - `outputs/metrics_summary.csv`
 - `outputs/likelihood_curves.csv`
+- `outputs/method_comparison_summary.csv` (direct `mcs_only` vs `mcs_csda_like_soft`)
 - Standard PNG summaries:
   - bias vs true energy (fixed contained fraction)
   - resolution vs true energy (fixed contained fraction)

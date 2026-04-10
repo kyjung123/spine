@@ -64,6 +64,38 @@ def compute_metrics(df: pd.DataFrame, catastrophic_frac_threshold: float = 0.5) 
     return pd.DataFrame(rows)
 
 
+def compute_method_comparison(metrics_df: pd.DataFrame) -> pd.DataFrame:
+    """Directly compare MCS-only and MCS+CSDA-like summary metrics."""
+    cols = [
+        "t0_true_mev",
+        "f_contained",
+        "bias_mev",
+        "resolution_mev",
+        "rmse_mev",
+        "catastrophic_frac",
+    ]
+    left = metrics_df[metrics_df["method"] == "mcs_only"][cols].copy()
+    right = metrics_df[metrics_df["method"] == "mcs_csda_like_soft"][cols].copy()
+    merged = left.merge(
+        right,
+        on=["t0_true_mev", "f_contained"],
+        suffixes=("_mcs_only", "_mcs_csda_like_soft"),
+        how="inner",
+    )
+    if merged.empty:
+        return merged
+
+    merged["delta_rmse_mev"] = merged["rmse_mev_mcs_csda_like_soft"] - merged["rmse_mev_mcs_only"]
+    merged["frac_rmse_improvement"] = (
+        merged["rmse_mev_mcs_only"] - merged["rmse_mev_mcs_csda_like_soft"]
+    ) / merged["rmse_mev_mcs_only"]
+    merged["delta_resolution_mev"] = (
+        merged["resolution_mev_mcs_csda_like_soft"] - merged["resolution_mev_mcs_only"]
+    )
+    merged["delta_bias_mev"] = merged["bias_mev_mcs_csda_like_soft"] - merged["bias_mev_mcs_only"]
+    return merged
+
+
 def run_study(
     true_energies=None,
     contained_fracs=None,
@@ -158,22 +190,26 @@ def run_study(
     reco_df = pd.DataFrame(reco_rows)
     metrics_df = compute_metrics(reco_df)
 
+    compare_df = compute_method_comparison(metrics_df)
+
     event_df.to_csv(out_dir / "events.csv", index=False)
     reco_df.to_csv(out_dir / "reco_event_level.csv", index=False)
     metrics_df.to_csv(out_dir / "metrics_summary.csv", index=False)
     pd.DataFrame(like_rows).to_csv(out_dir / "likelihood_curves.csv", index=False)
+    compare_df.to_csv(out_dir / "method_comparison_summary.csv", index=False)
 
     like_df = pd.DataFrame(like_rows)
-    return event_df, reco_df, metrics_df, like_df, out_dir
+    return event_df, reco_df, metrics_df, like_df, compare_df, out_dir
 
 
 def main():
-    _, _, _, _, out_dir = run_study()
+    _, _, _, _, _, out_dir = run_study()
     print("Saved:")
     print(out_dir / "events.csv")
     print(out_dir / "reco_event_level.csv")
     print(out_dir / "metrics_summary.csv")
     print(out_dir / "likelihood_curves.csv")
+    print(out_dir / "method_comparison_summary.csv")
 
 
 if __name__ == "__main__":
