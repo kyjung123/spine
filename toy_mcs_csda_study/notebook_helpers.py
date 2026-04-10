@@ -15,15 +15,19 @@ def require_matplotlib():
         ) from exc
 
 
-def plot_metric_vs_energy_inline(metrics_df, metric="bias_mev", f_contained=0.6):
+def plot_metric_vs_energy_inline(metrics_df, metric="bias_mev", f_contained=0.6, x_jitter=0.0):
     require_matplotlib()
     import matplotlib.pyplot as plt
 
     sub = metrics_df[np.isclose(metrics_df["f_contained"], f_contained)]
     fig, ax = plt.subplots(figsize=(7, 5))
-    for method in sorted(sub["method"].unique()):
+    methods = sorted(sub["method"].unique())
+    for i, method in enumerate(methods):
         d = sub[sub["method"] == method].sort_values("t0_true_mev")
-        ax.plot(d["t0_true_mev"], d[metric], marker="o", label=method)
+        x = d["t0_true_mev"].to_numpy(dtype=float).copy()
+        if x_jitter != 0.0 and len(methods) > 1:
+            x += (i - 0.5 * (len(methods) - 1)) * x_jitter
+        ax.plot(x, d[metric], marker="o", label=method)
     ax.set_xlabel("True initial kinetic energy [MeV]")
     ax.set_ylabel(metric)
     ax.set_title(f"{metric} vs energy (f_contained={f_contained:.1f})")
@@ -33,20 +37,45 @@ def plot_metric_vs_energy_inline(metrics_df, metric="bias_mev", f_contained=0.6)
     return fig, ax
 
 
-def plot_metric_vs_fraction_inline(metrics_df, metric="resolution_mev", t0_true_mev=800.0):
+def plot_metric_vs_fraction_inline(
+    metrics_df,
+    metric="resolution_mev",
+    t0_true_mev=800.0,
+    x_jitter=0.01,
+    show_delta=True,
+):
     require_matplotlib()
     import matplotlib.pyplot as plt
 
     sub = metrics_df[np.isclose(metrics_df["t0_true_mev"], t0_true_mev)]
-    fig, ax = plt.subplots(figsize=(7, 5))
-    for method in sorted(sub["method"].unique()):
+    methods = sorted(sub["method"].unique())
+
+    if show_delta and {"mcs_only", "mcs_csda_like_soft"}.issubset(set(methods)):
+        fig, (ax, ax2) = plt.subplots(2, 1, figsize=(7, 8), sharex=True, gridspec_kw={"height_ratios": [3, 2]})
+    else:
+        fig, ax = plt.subplots(figsize=(7, 5))
+        ax2 = None
+
+    for i, method in enumerate(methods):
         d = sub[sub["method"] == method].sort_values("f_contained")
-        ax.plot(d["f_contained"], d[metric], marker="o", label=method)
+        x = d["f_contained"].to_numpy(dtype=float).copy()
+        if x_jitter != 0.0 and len(methods) > 1:
+            x += (i - 0.5 * (len(methods) - 1)) * x_jitter
+        ax.plot(x, d[metric], marker="o", label=method)
     ax.set_xlabel("Contained fraction")
     ax.set_ylabel(metric)
     ax.set_title(f"{metric} vs contained fraction (T0={t0_true_mev:.0f} MeV)")
     ax.grid(alpha=0.3)
     ax.legend()
+    if ax2 is not None:
+        d0 = sub[sub["method"] == "mcs_only"].sort_values("f_contained")
+        d1 = sub[sub["method"] == "mcs_csda_like_soft"].sort_values("f_contained")
+        delta = d1[metric].to_numpy(dtype=float) - d0[metric].to_numpy(dtype=float)
+        ax2.axhline(0.0, color="k", linestyle="--", linewidth=1)
+        ax2.plot(d0["f_contained"], delta, marker="s", color="tab:purple")
+        ax2.set_ylabel(f\"Δ {metric}\\n(CSDA-like - MCS)\")
+        ax2.grid(alpha=0.3)
+        ax2.set_xlabel("Contained fraction")
     fig.tight_layout()
     return fig, ax
 

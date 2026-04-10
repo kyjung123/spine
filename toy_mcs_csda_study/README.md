@@ -82,6 +82,7 @@ The notebook uses:
 - `run_study.run_study(...)` as an importable API
 - `notebook_helpers.py` for inline plots (bias/resolution vs energy/fraction, scatter)
 - explicit `compare_df` and RMSE-improvement plotting to directly inspect `mcs_csda_like_soft`
+- jittered overlays + a delta panel in `plot_metric_vs_fraction_inline(...)` so near-identical curves are still visible
 
 If MCS-only and MCS+CSDA-like curves overlap too much, increase CSDA-like strength in the notebook call:
 - lower `penalty_sigma_cm`
